@@ -1,54 +1,35 @@
-#include "main.h"
+#include"main.h"
 
 /**
- * _strlen - find length of string
- * @str: string
- * Return: length
+ *append_text_to_file - appends text at the end of a file
+ *@filename: A pointer to the name of the file.
+ *@text_content: The string to add to the end of the file.
+ *
+ *Return: If the function fails or filename is NULL -1
+ *	if the file does not exist the user lacks write permissions -1
+ *	otherwise 1
  */
-int _strlen(char *str)
-{
-	int len;
 
-	for (len = 0; str[len] != '\0'; len++)
-		;
-
-	return (len);
-}
-
-/**
- * append_text_to_file - append text and only if file exists
- * @filename: file
- * @text_content: appends this content into file
- * Return: 1 on success, -1 on error
- */
 int append_text_to_file(const char *filename, char *text_content)
 {
-	int fd;
-	int n_wrote;
+	int o, w, len = 0;
 
-	if (!filename)
+	if (filename == NULL)
 		return (-1);
 
-	/* open file if it exists */
-	fd = open(filename, O_WRONLY | O_APPEND);
-	if (fd == -1)
-		return (-1);
-
-	/* if nothing to write, still successful */
-	if (!text_content)
+	if (text_content != NULL)
 	{
-		close(fd);
-		return (1);
+		for (len = 0; text_content[len];)
+			len++;
 	}
 
-	/* write */
-	n_wrote = write(fd, text_content, _strlen(text_content));
-	if (n_wrote == -1 || n_wrote != _strlen(text_content))
-	{
-		close(fd);
-		return (-1);
-	}
+	o = open(filename, O_WRONLY | O_APPEND);
+	w = write(o, text_content, len);
 
-	close(fd);
+	if (o == -1 || w == -1)
+		return (-1);
+
+	close(o);
+
 	return (1);
 }
