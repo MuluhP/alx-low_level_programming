@@ -13,5 +13,3 @@ int main(int argc, char __attribute__((__unused__)) *argv[])
 
 	return (0);
 }
-Footer
-© 2022 GitHub
